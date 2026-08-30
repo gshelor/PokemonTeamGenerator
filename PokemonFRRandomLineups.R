@@ -4,6 +4,13 @@ p_load(Rokemon, tidyverse)
 
 `%nin%` <- Negate(`%in%`)
 
+### setting seed to be used for random sampling of pokemon
+pokeseed <- as.integer(paste0(
+  format(Sys.Date(), "%Y"),
+  format(Sys.Date(), "%m"),
+  format(Sys.Date(), "%d")
+))
+
 data(pokemon)
 poopypants <- as.data.frame(pokemon)
 
@@ -14,7 +21,7 @@ gen1 <- poopypants |>
   filter(generation == 1)
 
 ### FireRed starters
-StarterPokemon <- c(
+StarterPokemonNames <- c(
   "Squirtle",
   "Charmander",
   "Bulbasaur",
@@ -26,19 +33,12 @@ StarterPokemon <- c(
   "Venusaur"
 )
 
-### change this seed upon beginning a new run
-## seed is the current year, month, and day smashed together to be one number
-## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
-set.seed(as.integer(paste0(
-  format(Sys.Date(), "%Y"),
-  format(Sys.Date(), "%m"),
-  format(Sys.Date(), "%d")
-)))
-RandomStarter <- sample(StarterPokemon, 1)
+StarterPokemon <- gen1 |>
+  filter(name %in% StarterPokemonNames)
 
 ### filter from gen 1 for firered because FR is almost entirely the same pokemon as in the gen 1 red game, just with updated abilities and other stuff that were introduced after gen 1
 NonStarters_FR <- gen1 |>
-  filter(name %nin% StarterPokemon) |>
+  filter(name %nin% StarterPokemonNames) |>
   ### filtering out pokemon which are in gen 3 or previous, but not in FireRed
   filter(
     name %nin%
@@ -72,18 +72,35 @@ NonStarters_FR <- gen1 |>
   ) |>
   mutate(type2 = case_when(type2 %in% c("dark", "fairy") ~ NA, TRUE ~ type2))
 
-### change this seed upon beginning a new run
-## seed is the current year, month, and day smashed together to be one number
+### filtering out bug types and duplicating them in the non starters df, for an extra challenge
+FRBugs <- NonStarters_FR |>
+  filter(type1 == "bug" | type2 == "bug")
+
+NonStarters_FR <- rbind(NonStarters_FR, FRBugs)
+
+AllFRPokemon <- rbind(NonStarters_FR, StarterPokemon)
+
+### seed is the current year, month, and day smashed together to be one number
 ## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
-set.seed(as.integer(paste0(
-  format(Sys.Date(), "%Y"),
-  format(Sys.Date(), "%m"),
-  format(Sys.Date(), "%d")
-)))
+set.seed(pokeseed)
+RandomStarter <- sample(StarterPokemonNames, 1)
+## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
+# set.seed(pokeseed)
 Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
+### sampling a full 6 if I decide to do a challenge with no starter
+### seed is the current year, month, and day smashed together to be one number
+## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
+# set.seed(pokeseed)
+Random6 <- sample(NonStarters_FR$name, 6, replace = FALSE)
+### sampling a Full 6 but with starters possible but not guaranteed
+# set.seed(pokeseed)
+Random6_StarterPossible <- sample(AllFRPokemon$name, 6, replace = FALSE)
 # Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 # Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 # Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 # Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 RandomStarter
 Random5
+### these two just produce the same order if I keep the seed setting. might remove it?
+Random6
+Random6_StarterPossible
