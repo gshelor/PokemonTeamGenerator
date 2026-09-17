@@ -67,16 +67,19 @@ NonStarters_FR <- gen1 |>
         "Slowbro",
         "Pinsir",
         "Staryu",
-        "Starmie"
+        "Starmie",
+        "Vulpix",
+        "Ninetales",
+        "Mew"
       )
   ) |>
   mutate(type2 = case_when(type2 %in% c("dark", "fairy") ~ NA, TRUE ~ type2))
 
-### filtering out bug types and duplicating them in the non starters df, for an extra challenge
+### filtering out bug types and duplicating them in the non starters df, so they're more likely to be sampled, for an extra challenge
 FRBugs <- NonStarters_FR |>
   filter(type1 == "bug" | type2 == "bug")
 
-NonStarters_FR <- rbind(NonStarters_FR, FRBugs)
+NonStarters_FR <- rbind(FRBugs, rbind(NonStarters_FR, FRBugs))
 
 AllFRPokemon <- rbind(NonStarters_FR, StarterPokemon)
 
@@ -104,3 +107,5 @@ Random5
 ### these two just produce the same order if I keep the seed setting. might remove it?
 Random6
 Random6_StarterPossible
+
+### if duplicates are present, I just rerun the Random5 sample without resetting the seed
