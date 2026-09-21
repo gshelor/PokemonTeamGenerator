@@ -70,7 +70,11 @@ NonStarters_FR <- gen1 |>
         "Starmie",
         "Vulpix",
         "Ninetales",
-        "Mew"
+        "Mew",
+        "Mewtwo",
+        "Articuno",
+        "Moltres",
+        "Zapdos"
       )
   ) |>
   mutate(type2 = case_when(type2 %in% c("dark", "fairy") ~ NA, TRUE ~ type2))
@@ -108,4 +112,4 @@ Random5
 Random6
 Random6_StarterPossible
 
-### if duplicates are present, I just rerun the Random5 sample without resetting the seed
+### if duplicates are present, I just rerun the relevant sample without resetting the seed
