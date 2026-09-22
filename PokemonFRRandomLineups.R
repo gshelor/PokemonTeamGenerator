@@ -91,7 +91,6 @@ AllFRPokemon <- rbind(NonStarters_FR, StarterPokemon)
 ## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
 set.seed(pokeseed)
 RandomStarter <- sample(StarterPokemonNames, 1)
-## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
 # set.seed(pokeseed)
 Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 ### sampling a full 6 if I decide to do a challenge with no starter
@@ -99,7 +98,7 @@ Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
 ## that way it's guaranteed to be different whenever I decide to play/replay a pokemon game
 # set.seed(pokeseed)
 Random6 <- sample(NonStarters_FR$name, 6, replace = FALSE)
-### sampling a Full 6 but with starters possible but not guaranteed
+### sampling a Full 6 with starters possible but not guaranteed
 # set.seed(pokeseed)
 Random6_StarterPossible <- sample(AllFRPokemon$name, 6, replace = FALSE)
 # Random5 <- sample(NonStarters_FR$name, 5, replace = FALSE)
