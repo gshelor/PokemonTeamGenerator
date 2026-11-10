@@ -77,7 +77,8 @@ NonStarters_FR <- gen1 |>
         "Zapdos",
         "Kingdra",
         "Sandshrew",
-        "Sandslash"
+        "Sandslash",
+        "Golem"
       )
   ) |>
   mutate(type2 = case_when(type2 %in% c("dark", "fairy") ~ NA, TRUE ~ type2))
